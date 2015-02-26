@@ -16,14 +16,24 @@ Vagrant.configure(2) do |config|
     if Vagrant.has_plugin?("vagrant-triggers") then
       test.trigger.after [:up, :resume] do
         info "Adjusting datetime after suspend and resume."
-        run_remote "sudo system-docker restart ntp && date"
+        run_remote <<-EOT.prepend("\n")
+          sudo system-docker stop ntp
+          sudo ntpd -n -q -g
+          date
+          sudo system-docker start ntp
+        EOT
       end
     end
 
     # Adjusting datetime before provisioning.
     test.vm.provision :shell, run: "always" do |sh|
       sh.privileged = false
-      sh.inline = "sudo system-docker restart ntp && date"
+      sh.inline = <<-EOT.prepend("\n")
+        sudo system-docker stop ntp
+        sudo ntpd -n -q -g
+        date
+        sudo system-docker start ntp
+      EOT
     end
 
     test.vm.provision :docker do |d|
