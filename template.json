@@ -33,7 +33,24 @@
     "type": "shell",
     "inline": [
       "(echo n; echo p; echo 1; echo ; echo ; echo w;) | sudo fdisk /dev/sda",
-      "docker run --rm --privileged -it debian mkfs.ext4 -F -L RANCHER_STATE /dev/sda"
+      "docker run --rm --privileged -it debian mkfs.ext4 -F -L RANCHER_STATE /dev/sda",
+
+      "sudo mkdir -p /mnt/sda",
+      "sudo mount /dev/sda /mnt/sda",
+
+      "sudo mkdir -p /tmp/rancheros-packer",
+      "sudo chmod 0777 /tmp/rancheros-packer"
+    ]
+  }, {
+    "type": "file",
+    "source": "oem/",
+    "destination": "/tmp/rancheros-packer"
+  }, {
+    "type": "shell",
+    "inline": [
+      "sudo mkdir -p /mnt/sda/lib/rancher/state/opt/rancher/bin",
+      "sudo cp /tmp/rancheros-packer/start.sh /mnt/sda/lib/rancher/state/opt/rancher/bin/",
+      "sudo chmod +x /mnt/sda/lib/rancher/state/opt/rancher/bin/start.sh"
     ]
   }],
 

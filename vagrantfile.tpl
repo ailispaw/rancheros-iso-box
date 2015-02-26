@@ -2,7 +2,6 @@ require_relative "vagrant_plugin_guest_busybox.rb"
 
 Vagrant.configure("2") do |config|
   config.ssh.username = "rancher"
-  config.ssh.password = "rancher"
 
   # Disable synced folder by default
   config.vm.synced_folder ".", "/vagrant", disabled: true

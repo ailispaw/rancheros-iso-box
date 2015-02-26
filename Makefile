@@ -1,4 +1,4 @@
-rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_busybox.rb
+rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_busybox.rb oem/start.sh
 	packer build template.json
 
 rancheros.iso:
