@@ -20,3 +20,13 @@ KEY
 fi
 
 chown -R $USERNAME:$USERNAME $HOME_DIR/.ssh
+
+if [ ! -d $HOME_DIR/certs ]; then
+  mkdir -p $HOME_DIR/certs
+
+  system-docker exec userdocker cp /etc/docker/tls/ca.pem $HOME_DIR/certs/
+
+  system-docker exec userdocker rancherctl tlsconf create --cakey /etc/docker/tls/ca-key.pem --ca /etc/docker/tls/ca.pem -g -o $HOME_DIR/certs/
+
+  chown -R $USERNAME:$USERNAME $HOME_DIR/certs
+fi
