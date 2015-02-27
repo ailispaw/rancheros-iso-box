@@ -45,3 +45,8 @@ fi
 if ! grep -q "^PasswordAuthentication no" /etc/ssh/sshd_config; then
   echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
 fi
+
+# Disable SSH Use DNS
+if ! grep -q "^UseDNS no" /etc/ssh/sshd_config; then
+  echo "UseDNS no" >> /etc/ssh/sshd_config
+fi
