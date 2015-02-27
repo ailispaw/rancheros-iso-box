@@ -1,3 +1,4 @@
 .vagrant/
+.certs/
 *.box
 *.iso

@@ -1,0 +1,9 @@
+default: rancheros
+hosts:
+- name: rancheros
+  url: tcp://192.168.33.10:2376
+  tls: true
+  tls-ca-cert: ./.certs/ca.pem
+  tls-cert: ./.certs/client-cert.pem
+  tls-key: ./.certs/client-key.pem
+  tls-verify: false
