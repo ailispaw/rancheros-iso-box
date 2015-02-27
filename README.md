@@ -6,6 +6,7 @@ Packaging a Vagrant box for [RancherOS](https://github.com/rancherio/os) with th
 
 ### Requirements
 
+- [VirtualBox](https://www.virtualbox.org/)
 - [Packer](https://packer.io/)
 - [RancherOS ISO](https://github.com/rancherio/os/releases)
 
@@ -29,6 +30,7 @@ $ make
 
 ### Requirements
 
+- [VirtualBox](https://www.virtualbox.org/)
 - [Vagrant](https://www.vagrantup.com/)
 - [Talk2Docker](https://github.com/ailispaw/talk2docker)
 
