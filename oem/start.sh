@@ -40,3 +40,8 @@ if [ ! -d $HOME_DIR/.certs ]; then
 
   chown -R $USERNAME:$USERNAME $HOME_DIR/.certs
 fi
+
+# Disable SSH Password Authentication
+if ! grep -q "^PasswordAuthentication no" /etc/ssh/sshd_config; then
+  echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
+fi
