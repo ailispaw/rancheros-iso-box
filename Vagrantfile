@@ -27,12 +27,11 @@ Vagrant.configure(2) do |config|
 
     # Adjusting datetime before provisioning.
     test.vm.provision :shell, run: "always" do |sh|
-      sh.privileged = false
       sh.inline = <<-EOT
-        sudo system-docker stop ntp
-        sudo ntpd -n -q -g
+        system-docker stop ntp
+        ntpd -n -q -g
         date
-        sudo system-docker start ntp
+        system-docker start ntp
       EOT
     end
 
