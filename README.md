@@ -57,7 +57,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "rancheros"
 
   config.vm.box = "rancheros"
-  config.vm.box_url = "https://github.com/ailispaw/rancheros-iso-box/releases/download/v0.3.0/rancheros-virtualbox.box"
+  config.vm.box_url = "https://github.com/ailispaw/rancheros-iso-box/releases/download/v0.4.0/rancheros-virtualbox.box"
 
   config.vm.hostname = "rancheros"
 
