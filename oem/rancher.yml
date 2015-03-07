@@ -1,0 +1,8 @@
+network_config:
+  config:
+    - match: eth0
+      dhcp: true
+    - match: lo
+      dhcp: false
+      address: 127.0.0.1/8
+  post_run: null

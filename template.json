@@ -48,6 +48,9 @@
   }, {
     "type": "shell",
     "inline": [
+      "sudo mkdir -p /mnt/sda/lib/rancher/conf",
+      "sudo cp /tmp/rancheros-packer/rancher.yml /mnt/sda/lib/rancher/conf/",
+
       "sudo mkdir -p /mnt/sda/lib/rancher/state/opt/rancher/bin",
       "sudo cp /tmp/rancheros-packer/start.sh /mnt/sda/lib/rancher/state/opt/rancher/bin/",
       "sudo chmod +x /mnt/sda/lib/rancher/state/opt/rancher/bin/start.sh"
