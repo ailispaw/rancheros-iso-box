@@ -4,7 +4,7 @@ rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_busyb
 	packer build template.json
 
 rancheros.iso:
-	curl -OL https://github.com/rancherio/os/releases/download/v0.1.1/rancheros.iso
+	curl -OL https://github.com/rancherio/os/releases/download/v0.1.2/rancheros.iso
 
 install: rancheros-virtualbox.box
 	vagrant box add -f rancheros rancheros-virtualbox.box
