@@ -33,27 +33,19 @@
     "type": "shell",
     "inline": [
       "(echo n; echo p; echo 1; echo ; echo ; echo w;) | sudo fdisk /dev/sda",
-      "docker run --rm --privileged -it debian mkfs.ext4 -F -L RANCHER_STATE /dev/sda",
+      "sudo system-docker run --privileged -t debian:jessie mkfs.ext4 -F -L RANCHER_STATE /dev/sda1",
 
-      "sudo mkdir -p /mnt/sda",
-      "sudo mount /dev/sda /mnt/sda",
-
-      "sudo mkdir -p /tmp/rancheros-packer",
-      "sudo chmod 0777 /tmp/rancheros-packer"
+      "sudo chmod 0777 /opt"
     ]
   }, {
     "type": "file",
     "source": "oem/",
-    "destination": "/tmp/rancheros-packer"
+    "destination": "/opt"
   }, {
     "type": "shell",
     "inline": [
-      "sudo mkdir -p /mnt/sda/lib/rancher/conf",
-      "sudo cp /tmp/rancheros-packer/rancher.yml /mnt/sda/lib/rancher/conf/",
-
-      "sudo mkdir -p /mnt/sda/lib/rancher/state/opt/rancher/bin",
-      "sudo cp /tmp/rancheros-packer/start.sh /mnt/sda/lib/rancher/state/opt/rancher/bin/",
-      "sudo chmod +x /mnt/sda/lib/rancher/state/opt/rancher/bin/start.sh"
+      "chmod +x /opt/install.sh",
+      "sudo system-docker run --privileged -t --volumes-from=user-volumes debian:jessie /opt/install.sh"
     ]
   }],
 

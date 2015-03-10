@@ -1,7 +1,7 @@
 T2D := talk2docker --config=talk2docker.yml
 
 rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_busybox.rb \
-	oem/start.sh oem/rancher.yml
+	oem/start.sh oem/rancher.yml oem/install.sh
 	packer build template.json
 
 rancheros.iso:
