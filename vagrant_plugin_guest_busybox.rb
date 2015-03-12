@@ -67,8 +67,8 @@ module VagrantPlugins
             # each specifically, we avoid reconfiguring eth0 (the NAT interface) so
             # SSH never dies.
             interfaces.each do |interface|
-              comm.sudo("ifdown eth#{interface} 2> /dev/null")
-              comm.sudo("ip addr flush dev eth#{interface} 2> /dev/null")
+              comm.sudo("/sbin/ifdown eth#{interface} 2> /dev/null")
+              comm.sudo("/sbin/ip addr flush dev eth#{interface} 2> /dev/null")
             end
 
             comm.sudo('cat /tmp/vagrant-network-interfaces.pre /tmp/vagrant-network-entry /tmp/vagrant-network-interfaces.post > /etc/network/interfaces')
@@ -76,7 +76,7 @@ module VagrantPlugins
 
             # Bring back up each network interface, reconfigured
             interfaces.each do |interface|
-              comm.sudo("ifup eth#{interface}")
+              comm.sudo("/sbin/ifup eth#{interface}")
             end
           end
         end
