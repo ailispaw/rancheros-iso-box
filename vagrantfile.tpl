@@ -3,6 +3,9 @@ require_relative "vagrant_plugin_guest_busybox.rb"
 Vagrant.configure("2") do |config|
   config.ssh.username = "rancher"
 
+  # Forward the Docker port
+  config.vm.network :forwarded_port, guest: 2375, host: 2375
+
   # Disable synced folder by default
   config.vm.synced_folder ".", "/vagrant", disabled: true
 

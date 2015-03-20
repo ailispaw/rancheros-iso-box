@@ -1,4 +1,4 @@
 default: rancheros
 hosts:
 - name: rancheros
-  url: tcp://192.168.33.10:2375
+  url: tcp://localhost:2375
