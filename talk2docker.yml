@@ -1,4 +1,0 @@
-default: rancheros
-hosts:
-- name: rancheros
-  url: tcp://localhost:2375

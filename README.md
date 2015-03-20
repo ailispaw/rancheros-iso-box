@@ -32,16 +32,14 @@ $ make
 
 - [VirtualBox](https://www.virtualbox.org/)
 - [Vagrant](https://www.vagrantup.com/)
-- [Talk2Docker](https://github.com/ailispaw/talk2docker)
 
 ### Test a box
 
 ```
 $ vagrant box add -f rancheros rancheros-virtualbox.box
 $ vagrant up
-$ mkdir -p .certs
-$ vagrant ssh -c 'cp /home/rancher/.certs/* /vagrant/.certs/' -- -T
-$ talk2docker --config=talk2docker.yml version
+$ export DOCKER_HOST=tcp://localhost:2375
+$ docker version
 ```
 
 Or
@@ -57,7 +55,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "rancheros"
 
   config.vm.box = "rancheros"
-  config.vm.box_url = "https://github.com/ailispaw/rancheros-iso-box/releases/download/v0.5.1/rancheros-virtualbox.box"
+  config.vm.box_url = "https://github.com/ailispaw/rancheros-iso-box/releases/download/v0.6.0/rancheros-virtualbox.box"
 
   config.vm.hostname = "rancheros"
 
@@ -70,7 +68,7 @@ Vagrant.configure(2) do |config|
       info "Adjusting datetime after suspend and resume."
       run_remote <<-EOT.prepend("\n")
         sudo system-docker stop ntp
-        sudo ntpd -n -q -g
+        sudo ntpd -n -q -g -I eth0 > /dev/null
         date
         sudo system-docker start ntp
       EOT
@@ -81,7 +79,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, run: "always" do |sh|
     sh.inline = <<-EOT
       system-docker stop ntp
-      ntpd -n -q -g
+      ntpd -n -q -g -I eth0 > /dev/null
       date
       system-docker start ntp
     EOT

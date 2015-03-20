@@ -1,5 +1,3 @@
-T2D := talk2docker --config=talk2docker.yml
-
 rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_busybox.rb \
 	oem/start.sh oem/rancher.yml oem/install.sh
 	packer build template.json
@@ -16,12 +14,12 @@ boot_test: install
 
 test: boot_test
 	vagrant provision
-	@echo "-----> $(T2D) version"
-	$(T2D) version
-	@echo "-----> $(T2D) ls -a"
-	$(T2D) ls -a
-	@echo "-----> $(T2D) ps -a"
-	$(T2D) ps -a
+	@echo "-----> docker version"
+	docker version
+	@echo "-----> docker images -t"
+	docker images -t
+	@echo "-----> docker ps -a"
+	docker ps -a
 	@echo "-----> nc localhost 8080"
 	@nc localhost 8080
 	@echo "-----> hostname"
