@@ -22,6 +22,15 @@ module VagrantPlugins
 end
 
 # Add configure_networks guest capability
+require 'ipaddr'
+
+# Borrowing from http://stackoverflow.com/questions/1825928/netmask-to-cidr-in-ruby
+IPAddr.class_eval do
+  def to_cidr
+    self.to_i.to_s(2).count("1")
+  end
+end
+
 module VagrantPlugins
   module GuestLinux
     class Plugin < Vagrant.plugin("2")
@@ -32,52 +41,22 @@ module VagrantPlugins
 
     module Cap
       class ConfigureNetworks
-        include Vagrant::Util
-
         def self.configure_networks(machine, networks)
           machine.communicate.tap do |comm|
-            # First, remove any previous network modifications
-            # from the interface file.
-            comm.sudo("sed -e '/^#VAGRANT-BEGIN/,$ d' /etc/network/interfaces > /tmp/vagrant-network-interfaces.pre")
-            comm.sudo("sed -ne '/^#VAGRANT-END/,$ p' /etc/network/interfaces | tail -n +2 > /tmp/vagrant-network-interfaces.post")
-
-            # Accumulate the configurations to add to the interfaces file as
-            # well as what interfaces we're actually configuring since we use that
-            # later.
-            interfaces = Set.new
-            entries = []
             networks.each do |network|
-              interfaces.add(network[:interface])
-              entry = TemplateRenderer.render("guests/debian/network_#{network[:type]}",
-                                              options: network)
+              iface = "eth#{network[:interface]}"
+              dhcp  = "true"
 
-              entries << entry
+              if network[:type] == :static
+                cidr = IPAddr.new(network[:netmask]).to_cidr
+                comm.sudo("rancherctl config set network.interfaces.#{iface}.address #{network[:ip]}/#{cidr}")
+                dhcp = "false"
+              end
+
+              comm.sudo("rancherctl config set network.interfaces.#{iface}.dhcp #{dhcp}")
             end
 
-            # Perform the careful dance necessary to reconfigure
-            # the network interfaces
-            temp = Tempfile.new("vagrant")
-            temp.binmode
-            temp.write(entries.join("\n"))
-            temp.close
-
-            comm.upload(temp.path, "/tmp/vagrant-network-entry")
-
-            # Bring down all the interfaces we're reconfiguring. By bringing down
-            # each specifically, we avoid reconfiguring eth0 (the NAT interface) so
-            # SSH never dies.
-            interfaces.each do |interface|
-              comm.sudo("/sbin/ifdown eth#{interface} 2> /dev/null")
-              comm.sudo("/sbin/ip addr flush dev eth#{interface} 2> /dev/null")
-            end
-
-            comm.sudo('cat /tmp/vagrant-network-interfaces.pre /tmp/vagrant-network-entry /tmp/vagrant-network-interfaces.post > /etc/network/interfaces')
-            comm.sudo('rm -f /tmp/vagrant-network-interfaces.pre /tmp/vagrant-network-entry /tmp/vagrant-network-interfaces.post')
-
-            # Bring back up each network interface, reconfigured
-            interfaces.each do |interface|
-              comm.sudo("/sbin/ifup eth#{interface}")
-            end
+            comm.sudo("system-docker restart network")
           end
         end
       end

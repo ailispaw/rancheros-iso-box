@@ -24,8 +24,6 @@ test: boot_test
 	@nc localhost 8080
 	@echo "-----> hostname"
 	@vagrant ssh -c "hostname" -- -T
-	@echo "-----> /etc/network/interfaces"
-	@vagrant ssh -c "cat /etc/network/interfaces" -- -T
 	@echo "-----> route"
 	@vagrant ssh -c "route" -- -T
 	vagrant suspend
