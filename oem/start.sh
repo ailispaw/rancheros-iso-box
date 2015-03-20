@@ -22,25 +22,6 @@ fi
 
 chown -R $USERNAME:$USERNAME $HOME_DIR/.ssh
 
-# Get Docker client certificates at the first time
-if [ ! -d $HOME_DIR/.certs ]; then
-  mkdir -p $HOME_DIR/.certs
-
-  while ! system-docker exec userdocker test -e /etc/docker/tls/ca.pem; do
-    sleep 0.1
-  done
-
-  system-docker exec userdocker cp /etc/docker/tls/ca.pem $HOME_DIR/.certs/
-
-  while ! system-docker exec userdocker test -e /etc/docker/tls/ca-key.pem; do
-    sleep 0.1
-  done
-
-  system-docker exec userdocker rancherctl tlsconf create --cakey /etc/docker/tls/ca-key.pem --ca /etc/docker/tls/ca.pem -g -o $HOME_DIR/.certs/
-
-  chown -R $USERNAME:$USERNAME $HOME_DIR/.certs
-fi
-
 # Disable SSH Password Authentication
 if ! grep -q "^PasswordAuthentication no" /etc/ssh/sshd_config; then
   echo "PasswordAuthentication no" >> /etc/ssh/sshd_config

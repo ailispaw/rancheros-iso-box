@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
         info "Adjusting datetime after suspend and resume."
         run_remote <<-EOT.prepend("\n")
           sudo system-docker stop ntp
-          sudo ntpd -n -q -g
+          sudo ntpd -n -q -g -I eth0 > /dev/null
           date
           sudo system-docker start ntp
         EOT
@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
     test.vm.provision :shell, run: "always" do |sh|
       sh.inline = <<-EOT
         system-docker stop ntp
-        ntpd -n -q -g
+        ntpd -n -q -g -I eth0 > /dev/null
         date
         system-docker start ntp
       EOT

@@ -5,7 +5,7 @@ rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_busyb
 	packer build template.json
 
 rancheros.iso:
-	curl -OL https://github.com/rancherio/os/releases/download/v0.1.2/rancheros.iso
+	curl -OL https://github.com/rancherio/os/releases/download/v0.2.0-rc3/rancheros.iso
 
 install: rancheros-virtualbox.box
 	vagrant box add -f rancheros rancheros-virtualbox.box
@@ -16,8 +16,6 @@ boot_test: install
 
 test: boot_test
 	vagrant provision
-	mkdir -p .certs
-	vagrant ssh -c 'cp /home/rancher/.certs/* /vagrant/.certs/' -- -T
 	@echo "-----> $(T2D) version"
 	$(T2D) version
 	@echo "-----> $(T2D) ls -a"

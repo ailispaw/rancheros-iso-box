@@ -1,8 +1,20 @@
-network_config:
-  config:
-    - match: eth0
-      dhcp: true
-    - match: lo
+network:
+  interfaces:
+    eth*:
       dhcp: false
-      address: 127.0.0.1/8
-  post_run: null
+    eth0:
+      dhcp: true
+
+user_docker:
+  tls: false
+  args:
+    - docker
+    - -d
+    - -s
+    - overlay
+    - -G
+    - docker
+    - -H
+    - unix:///var/run/docker.sock
+    - -H
+    - 0.0.0.0:2375
