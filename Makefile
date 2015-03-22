@@ -33,7 +33,6 @@ clean:
 	$(RM) rancheros-virtualbox.box
 	$(RM) rancheros.iso
 	$(RM) -r .vagrant
-	$(RM) -r .certs
 	$(RM) -r packer_cache
 
-.PHONY: install boot_test clean
+.PHONY: boot_test test clean
