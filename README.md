@@ -51,11 +51,24 @@ $ make test
 ## Sample Vagrantfile
 
 ```ruby
+module VagrantPlugins
+  module GuestLinux
+    class Plugin < Vagrant.plugin("2")
+      guest_capability("linux", "change_host_name") do
+        Cap::ChangeHostName
+      end
+
+      guest_capability("linux", "configure_networks") do
+        Cap::ConfigureNetworks
+      end
+    end
+  end
+end
+
 Vagrant.configure(2) do |config|
   config.vm.define "rancheros"
 
-  config.vm.box = "rancheros"
-  config.vm.box_url = "https://github.com/ailispaw/rancheros-iso-box/releases/download/v0.6.0/rancheros-virtualbox.box"
+  config.vm.box = "ailispaw/rancheros"
 
   config.vm.hostname = "rancheros"
 
