@@ -26,26 +26,11 @@ module VagrantPlugins
 
         def change_hostname_for_console
           machine.communicate.tap do |comm|
-            if !comm.test("hostname -s | grep '^#{short_hostname}$'")
-              comm.sudo("sh -c 'echo \"#{short_hostname}\" > /etc/hostname'")
+            if !comm.test("hostname -s | grep '^#{new_hostname}$'")
+              comm.sudo("sh -c 'echo \"#{new_hostname}\" > /etc/hostname'")
               comm.sudo("hostname -F /etc/hostname")
             end
-            if (domain != "") && !comm.test("grep '^domain #{domain}$' /etc/resolv.conf")
-              comm.sudo("sh -c 'echo \"domain #{domain}\" >> /etc/resolv.conf'")
-            end
           end
-        end
-
-        def short_hostname
-          new_hostname.split('.').first
-        end
-
-        def domain
-          domain = ""
-          if short_hostname != new_hostname
-            domain = new_hostname.split('.')[1..-1].join('.')
-          end
-          domain
         end
       end
     end
