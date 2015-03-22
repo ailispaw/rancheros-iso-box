@@ -7,7 +7,7 @@ CONFIG_DIR=${MOUNT_POINT}/lib/rancher/conf
 SCRIPT_DIR=${MOUNT_POINT}/lib/rancher/state/opt/rancher/bin
 
 mkdir -p ${MOUNT_POINT}
-mount ${DEVICE} ${MOUNT_POINT}
+mount -t ext4 ${DEVICE} ${MOUNT_POINT}
 
 mkdir -p ${CONFIG_DIR}
 cp /opt/rancher.yml ${CONFIG_DIR}
