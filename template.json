@@ -51,7 +51,7 @@
 
   "post-processors": [{
     "type": "vagrant",
-    "include": ["rancheros.iso", "vagrant_plugin_guest_busybox.rb"],
+    "include": ["rancheros.iso", "vagrant_plugin_guest_rancheros.rb"],
     "vagrantfile_template": "vagrantfile.tpl",
     "output": "rancheros-{{.Provider}}.box"
   }]
