@@ -24,6 +24,8 @@ test: boot_test
 	@nc localhost 8080
 	@echo "-----> hostname"
 	@vagrant ssh -c "hostname" -- -T
+	@echo "-----> userdocker hostname"
+	@vagrant ssh -c "sudo system-docker exec -t userdocker hostname" -- -T
 	@echo "-----> route"
 	@vagrant ssh -c "route" -- -T
 	vagrant suspend

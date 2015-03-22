@@ -10,25 +10,10 @@ module VagrantPlugins
     module Cap
       class ChangeHostName
         def self.change_host_name(machine, name)
-          new(machine, name).change!
-        end
-
-        attr_reader :machine, :new_hostname
-
-        def initialize(machine, new_hostname)
-          @machine = machine
-          @new_hostname = new_hostname
-        end
-
-        def change!
-          change_hostname_for_console
-        end
-
-        def change_hostname_for_console
           machine.communicate.tap do |comm|
-            if !comm.test("hostname -s | grep '^#{new_hostname}$'")
-              comm.sudo("sh -c 'echo \"#{new_hostname}\" > /etc/hostname'")
-              comm.sudo("hostname -F /etc/hostname")
+            ['console', 'userdocker', 'syslog', 'ntp'].each do |conatiner|
+              comm.sudo("system-docker exec #{conatiner} sh -c 'hostname | grep '^#{name}$' || echo \"#{name}\" > /etc/hostname' || true")
+              comm.sudo("system-docker exec #{conatiner} hostname -F /etc/hostname || true")
             end
           end
         end
