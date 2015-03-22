@@ -10,11 +10,42 @@ module VagrantPlugins
     module Cap
       class ChangeHostName
         def self.change_host_name(machine, name)
+          new(machine, name).change!
+        end
+
+        attr_reader :machine, :new_hostname
+
+        def initialize(machine, new_hostname)
+          @machine = machine
+          @new_hostname = new_hostname
+        end
+
+        def change!
+          change_hostname_for_console
+        end
+
+        def change_hostname_for_console
           machine.communicate.tap do |comm|
-            if !comm.test("hostname -f | grep '^#{name}$' || hostname -s | grep '^#{name}$'")
-              comm.sudo("hostname #{name}")
+            if !comm.test("hostname -s | grep '^#{short_hostname}$'")
+              comm.sudo("sh -c 'echo \"#{short_hostname}\" > /etc/hostname'")
+              comm.sudo("hostname -F /etc/hostname")
+            end
+            if (domain != "") && !comm.test("grep '^domain #{domain}$' /etc/resolv.conf")
+              comm.sudo("sh -c 'echo \"domain #{domain}\" >> /etc/resolv.conf'")
             end
           end
+        end
+
+        def short_hostname
+          new_hostname.split('.').first
+        end
+
+        def domain
+          domain = ""
+          if short_hostname != new_hostname
+            domain = new_hostname.split('.')[1..-1].join('.')
+          end
+          domain
         end
       end
     end
