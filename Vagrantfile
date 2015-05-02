@@ -51,9 +51,9 @@ Vagrant.configure(2) do |config|
     end
 
     test.vm.provision :docker do |d|
-      d.pull_images "yungsang/busybox"
+      d.pull_images "busybox"
       d.run "simple-echo",
-        image: "yungsang/busybox",
+        image: "busybox",
         args: "-p 8080:8080",
         cmd: "nc -p 8080 -l -l -e echo hello world!"
     end
