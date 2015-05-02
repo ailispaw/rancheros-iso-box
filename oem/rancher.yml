@@ -7,14 +7,11 @@ network:
 
 user_docker:
   tls: false
-  args:
-    - docker
-    - -d
-    - -s
-    - overlay
-    - -G
-    - docker
-    - -H
-    - unix:///var/run/docker.sock
-    - -H
-    - 0.0.0.0:2375
+  args: [
+    "docker",
+    "-d",
+    "-s", "overlay",
+    "-G", "docker",
+    "-H", "unix:///var/run/docker.sock",
+    "-H", "0.0.0.0:2375"
+  ]
