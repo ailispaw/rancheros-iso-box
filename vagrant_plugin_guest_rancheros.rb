@@ -11,7 +11,7 @@ module VagrantPlugins
       class ChangeHostName
         def self.change_host_name(machine, name)
           machine.communicate.tap do |comm|
-            ['console', 'userdocker', 'syslog', 'ntp'].each do |conatiner|
+            ['console', 'docker', 'syslog', 'ntp', 'acpid', 'udev'].each do |conatiner|
               comm.sudo("system-docker exec #{conatiner} sh -c 'hostname | grep '^#{name}$' || echo \"#{name}\" > /etc/hostname' || true")
               comm.sudo("system-docker exec #{conatiner} hostname -F /etc/hostname || true")
             end
@@ -125,9 +125,9 @@ module VagrantPlugins
             end
 
             # Do the actual creating and mounting
-            machine.communicate.sudo("system-docker exec userdocker mkdir -p #{expanded_guest_path}")
+            machine.communicate.sudo("system-docker exec docker mkdir -p #{expanded_guest_path}")
 
-            mount_command = "system-docker exec userdocker mount -o '#{mount_opts.join(",")}' #{ip}:'#{hostpath}' #{expanded_guest_path}"
+            mount_command = "system-docker exec docker mount -o '#{mount_opts.join(",")}' #{ip}:'#{hostpath}' #{expanded_guest_path}"
             retryable(on: Vagrant::Errors::LinuxNFSMountFailed, tries: 8, sleep: 3) do
               machine.communicate.sudo(mount_command,
                                        error_class: Vagrant::Errors::LinuxNFSMountFailed)

@@ -3,7 +3,7 @@ rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_ranch
 	packer build template.json
 
 rancheros.iso:
-	curl -OL https://github.com/rancherio/os/releases/download/v0.3.0/rancheros.iso
+	curl -OL https://github.com/rancherio/os/releases/download/v0.3.1/rancheros.iso
 
 boot_test:
 	vagrant destroy -f
@@ -22,8 +22,8 @@ test: boot_test
 	@nc localhost 8080
 	@echo "-----> hostname"
 	@vagrant ssh -c "hostname" -- -T
-	@echo "-----> userdocker hostname"
-	@vagrant ssh -c "sudo system-docker exec -t userdocker hostname" -- -T
+	@echo "-----> docker hostname"
+	@vagrant ssh -c "sudo system-docker exec -t docker hostname" -- -T
 	@echo "-----> route"
 	@vagrant ssh -c "route" -- -T
 	vagrant suspend
