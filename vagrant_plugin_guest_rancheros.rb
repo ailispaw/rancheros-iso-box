@@ -11,8 +11,8 @@ module VagrantPlugins
       class ChangeHostName
         def self.change_host_name(machine, name)
           machine.communicate.tap do |comm|
-            ['console', 'docker', 'syslog', 'ntp', 'acpid', 'udev'].each do |conatiner|
-              comm.sudo("system-docker exec #{conatiner} sh -c 'hostname | grep '^#{name}$' || echo \"#{name}\" > /etc/hostname' || true")
+            ['console', 'docker', 'syslog', 'acpid', 'udev'].each do |conatiner|
+              comm.sudo("system-docker exec #{conatiner} sh -c 'hostname | grep \"^#{name}$\" || echo \"#{name}\" > /etc/hostname' || true")
               comm.sudo("system-docker exec #{conatiner} hostname -F /etc/hostname || true")
             end
           end

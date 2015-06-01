@@ -31,3 +31,7 @@ fi
 if ! grep -q "^UseDNS no" /etc/ssh/sshd_config; then
   echo "UseDNS no" >> /etc/ssh/sshd_config
 fi
+
+labels=$(system-docker inspect -f '{{range $label, $value := .Config.Labels}} --label={{$label}}={{$value}} {{end}}' ntp)
+system-docker rm -f ntp
+system-docker run -d --name=ntp --restart=always --privileged --net=host ${labels} ntp ntpd -d
