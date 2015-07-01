@@ -3,7 +3,7 @@ rancheros-virtualbox.box: rancheros.iso template.json vagrant_plugin_guest_ranch
 	packer build template.json
 
 rancheros.iso:
-	curl -OL https://github.com/rancherio/os/releases/download/v0.3.1/rancheros.iso
+	curl -OL https://github.com/rancherio/os/releases/download/v0.3.2/rancheros.iso
 
 boot_test:
 	vagrant destroy -f
