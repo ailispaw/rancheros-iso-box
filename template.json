@@ -33,7 +33,7 @@
     "type": "shell",
     "inline": [
       "(echo n; echo p; echo 1; echo ; echo ; echo w;) | sudo fdisk /dev/sda",
-      "sudo system-docker run --privileged -t rancher/os-state:v0.3.2 mkfs.ext4 -F -L RANCHER_STATE /dev/sda1",
+      "sudo system-docker run --privileged -t rancher/os-state:v0.3.3 mkfs.ext4 -F -L RANCHER_STATE /dev/sda1",
 
       "sudo chmod 0777 /opt"
     ]
@@ -45,7 +45,7 @@
     "type": "shell",
     "inline": [
       "chmod +x /opt/install.sh",
-      "sudo system-docker run --privileged -t --volumes-from=user-volumes rancher/os-state:v0.3.2 /opt/install.sh"
+      "sudo system-docker run --privileged -t --volumes-from=user-volumes rancher/os-state:v0.3.3 /opt/install.sh"
     ]
   }],
 

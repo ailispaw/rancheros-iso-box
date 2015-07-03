@@ -34,4 +34,4 @@ fi
 
 labels=$(system-docker inspect -f '{{range $label, $value := .Config.Labels}} --label={{$label}}={{$value}} {{end}}' ntp)
 system-docker rm -f ntp
-system-docker run -d --name=ntp --restart=always --privileged --net=host ${labels} rancher/os-ntp:v0.3.2 ntpd -d
+system-docker run -d --name=ntp --restart=always --privileged --net=host ${labels} rancher/os-ntp:v0.3.3 ntpd -d
